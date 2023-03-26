@@ -1,6 +1,37 @@
 import React from 'react';
 
 function ListRepo({ repo }) {
+	let license;
+
+	switch (repo.licenseInfo?.spdxId) {
+		case undefined:
+			license = (
+				<span
+					className="px-1 py-0 ms-1 d-inline-block btn btn-sm btn-danger"
+					style={{ fontSize: ".6em" }}>
+					NO LICENSE
+				</span>
+			)
+			break;
+		case 'NOASSERTION':
+			license = (
+				<span
+					className="px-1 py-0 ms-1 d-inline-block btn btn-sm btn-warning"
+					style={{ fontSize: ".6em" }}>
+					{repo.licenseInfo.spdxId}
+				</span>
+			)
+			break;
+		default:
+			license = (
+				<span
+					className="px-1 py-0 ms-1 d-inline-block btn btn-sm btn-outline-success"
+					style={{ fontSize: ".6em" }}>
+					{repo.licenseInfo.spdxId}
+				</span>
+			)
+	}
+
 	return (
 		<li className="list-group-item" key={repo.id.toString()}>
 			<div className='d-flex justify-content-between align-items-center'>
@@ -10,9 +41,12 @@ function ListRepo({ repo }) {
 						repo.description ? (<p className='small'>{repo.description}</p>) : (<p className='text-secondary txt-bold fst-italic'>Description is not Available</p>)
 					}
 				</div>
-				<span style={{ fontSize: ".6em" }} className={`px-1 py-1 ms-1 d-inline-block btn btn-sm ${ repo.viewerSubscription === 'SUBSCRIBED' ? 'btn-success' : 'btn-outline-secondary'  } `}>
-					{repo.viewerSubscription}
-				</span>
+				<div className="text-nowrap ms-3">
+					{license}
+					<span style={{ fontSize: ".6em" }} className={`px-1 py-1 ms-1 d-inline-block btn btn-sm ${repo.viewerSubscription === 'SUBSCRIBED' ? 'btn-success' : 'btn-outline-secondary'} `}>
+						{repo.viewerSubscription}
+					</span>
+				</div>
 			</div>
 		</li>
 	)
