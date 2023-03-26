@@ -1,8 +1,16 @@
 $primary: #6f42c1;
 $secondary: #EC407A;
 
+:root {
+    --bg-primary : #E1BEE7;
+}
+
 .txt-bold {
     font-weight: 700;
+}
+
+body {
+    background-color: var(--bg-primary);
 }
 
 @import "~bootstrap/scss/bootstrap";
