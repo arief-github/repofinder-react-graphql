@@ -1,30 +1,36 @@
 import 'bootstrap';
 import './scss/custom.scss';
 import { FaProjectDiagram } from 'react-icons/fa';
-import { useEffect } from 'react';
-import { GET_CURRENT_LOGIN } from './gql/query';
+import { useState, useEffect, useCallback } from 'react';
+import query from './gql/query';
 import github from './config/token';
 
 function App() {
-  useEffect(() => {
-    const githubQuery = {
-      query: GET_CURRENT_LOGIN
-    }
+  const [username, setUsername] = useState("");
 
+  const fetchData = useCallback(() => {
     fetch(github.baseURL, {
       method: "POST",
       headers: github.headers,
-      body: JSON.stringify(githubQuery),
+      body: JSON.stringify(query)
     })
     .then((res) => res.json())
-    .then((data) => console.log(data))
+    .then((data) => {
+      setUsername(data.data.viewer.name)
+      console.log(data)
+    })
     .catch((err) => console.error(err))
-  },[])
+  }, [])
+
+  useEffect(() => {
+    fetchData();
+  },[fetchData]) 
 
   return (
    <div className='container'>
     <h1 className='text-primary'>  <FaProjectDiagram className='text-primary mx-2'/> Repos </h1>
-   </div>
+    <p>Hello, Welcome <span className='text-secondary txt-bold text-uppercase'>{username}</span></p>
+   </div> 
   )
 }
 

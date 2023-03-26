@@ -1,9 +1,11 @@
-const GET_CURRENT_LOGIN = `
-    {
-        viewer {
-        login
+const githubQuery = {
+    query : `
+        {
+            viewer {
+                name
+            }
         }
-    }
-`;
+    `
+}
 
-export { GET_CURRENT_LOGIN };
+export default githubQuery;
