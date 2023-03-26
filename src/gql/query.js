@@ -1,28 +1,42 @@
-const githubQuery = (pageCount, queryString) => {
+const githubQuery = (
+    pageCount,
+    queryString,
+    paginationKeyword,
+    paginationString
+  ) => {
     return {
-        query: `
-        {
-            viewer {
-                name
-            }
-            search(query: " ${queryString}user:arief-github sort:update-desc", type: REPOSITORY, first: ${pageCount}) {
-                    repositoryCount
-                    nodes {
-                        ... on Repository {
-                            id
-                            url
-                            name
-                            description
-                            viewerSubscription
-                            licenseInfo {
-                                spdxId
-                            }
-                        }
-                }
-            }
+      query: `
+      {
+        viewer {
+          name
         }
-    `
-    }
-}
-
-export default githubQuery;
+        search(query: "${queryString} user:arief-github sort:updated-desc", type: REPOSITORY, ${paginationKeyword}: ${pageCount}, ${paginationString}) {
+          repositoryCount
+          edges {
+            cursor
+            node {
+              ... on Repository {
+                name
+                description
+                id
+                url
+                viewerSubscription
+                licenseInfo {
+                  spdxId
+                }
+              }
+            }
+          }
+          pageInfo {
+            startCursor
+            endCursor
+            hasNextPage
+            hasPreviousPage
+          }
+        }
+      }
+    `,
+    };
+  };
+  
+  export default githubQuery;
